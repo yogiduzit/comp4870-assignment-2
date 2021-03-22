@@ -37,7 +37,7 @@ namespace StudentAPI
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, StudentDbContext context)
     {
       if (env.IsDevelopment())
       {
@@ -46,8 +46,9 @@ namespace StudentAPI
 
       app.UseRouting();
       app.UseCors();
-            app.UseAuthorization();
+      app.UseAuthorization();
 
+      context.Database.Migrate();
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();

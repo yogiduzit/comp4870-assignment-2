@@ -1,0 +1,89 @@
+@page "/edit/{id}"
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
+
+<h1>Edit Student</h1>
+
+
+<EditForm Model="@student" OnValidSubmit="@HandleUpdate">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+
+  First Name :
+  <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
+  <br />
+  Last Name :
+  <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
+  <br />
+  BCIT ID :
+  <InputText placeholder="BCIT ID" id="bcitId" @bind-Value="@student.BcitID" />
+  <br />
+  Mobile Number :
+  <InputText placeholder="Mobile Number" id="mobileNumber" @bind-Value="@student.MobileNumber" />
+  <br />
+  Email Address :
+  <InputText placeholder="Email Address" id="emailAddress" @bind-Value="@student.EmailAddress" />
+  <br />
+  City Of Residence :
+  <InputText placeholder="City Of Residence" id="cityOfResidence" @bind-Value="@student.CityOfResidence" />
+  <br />
+  Specialization :
+  <InputText placeholder="Specialization" id="specialization" @bind-Value="@student.Specialization" />
+  <br />
+  <button type="submit" class="btn btn-success">Update</button>
+
+  @code {
+    private Student student = new Student();
+
+
+    Student s;
+
+
+    private enum MODE { None, Add, Edit, Delete };
+    MODE mode = MODE.None;
+    private async void HandleUpdate()
+    {
+      string endpoint = $"{baseUrl}api/students/{Id}";
+
+      await httpClient.PutAsJsonAsync(endpoint, student);
+
+      await load();
+      mode = MODE.None;
+      StateHasChanged(); // causes the page to get automatically refreshed
+      GoBack();
+    }
+  }
+</EditForm>
+
+@code {
+  [Parameter]
+  public string Id { get; set; }
+
+  Student[] students;
+  string baseUrl = "http://localhost:3000/";
+
+  protected override async Task OnInitializedAsync()
+  {
+    await load();
+  }
+
+  protected async Task load()
+  {
+    students = await httpClient.GetFromJsonAsync<Student[]>($"{baseUrl}api/students");
+    s = await httpClient.GetFromJsonAsync<Student>($"{baseUrl}api/students/{Id}");
+    student.Id = s.Id;
+    student.FirstName = s.FirstName;
+    student.LastName = s.LastName;
+    student.BcitID = s.BcitID;
+    student.MobileNumber = s.MobileNumber;
+    student.EmailAddress = s.EmailAddress;
+    student.CityOfResidence = s.CityOfResidence;
+    student.Specialization = s.Specialization;
+    mode = MODE.Edit;
+  }
+  protected void GoBack()
+  {
+    NavManager.NavigateTo("/students");
+  }
+
+}

@@ -1,0 +1,120 @@
+﻿@page "/students"
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
+
+
+<h1>Students</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (students == null) {
+<p><em>Loading...</em></p>
+} else {
+<button @onclick="@Add" class="btn btn-secondary">Add Student</button>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var item in students) {
+    <tr>
+      <td>@item.FirstName @item.LastName </td>
+      <td><a class="btn btn-primary" @onclick="@(() => ShowEdit(item.Id))">Edit</a></td>
+      <td><a class="btn btn-primary" @onclick="@(() => ShowDelete(item.Id))">Delete</a></td> 
+    </tr>
+    }
+  </tbody>
+</table>
+}
+
+@if (students != null && mode==MODE.Add) // Insert form
+{
+   GoToAdd();
+
+
+  @code {
+    private Student student = new Student();
+    private enum MODE { None, Add, Edit, Delete };
+    MODE mode = MODE.None;
+    Student s;
+
+    private async void HandleAdd() {
+      string endpoint = $"{baseUrl}api/students";
+
+      student.Id = Guid.NewGuid().ToString();
+
+      await httpClient.PostAsJsonAsync(endpoint, student);
+
+      await load();
+      StateHasChanged(); // causes the page to get automatically refreshed
+      mode = MODE.None;
+    }
+  }
+}
+
+
+
+
+
+@code {
+  Student[] students;
+  string baseUrl = "http://localhost:3000/";
+
+  protected override async Task OnInitializedAsync() {
+    await load();
+  }
+
+  protected async Task load() {
+    students = await httpClient.GetFromJsonAsync<Student[]>($"{baseUrl}api/students");
+  }
+
+  protected void Add() {
+    mode = MODE.Add;
+  }
+
+  protected void GoToAdd()
+  {
+      NavManager.NavigateTo("/add");
+  }
+
+  protected void GoToEdit(string id)
+  {
+      NavManager.NavigateTo($"/edit/{id}");
+  }
+
+  protected void GoToDelete(string id)
+  {
+      NavManager.NavigateTo($"/delete/{id}");
+  }
+
+  protected async Task ShowEdit(string id) {
+  s = await httpClient.GetFromJsonAsync<Student>($"{baseUrl}api/students/{id}");
+  student.Id = s.Id;
+  student.FirstName = s.FirstName;
+  student.LastName = s.LastName;
+  student.BcitID = s.BcitID;
+  student.MobileNumber = s.MobileNumber;
+  student.EmailAddress = s.EmailAddress;
+  student.CityOfResidence = s.CityOfResidence;
+  student.Specialization = s.Specialization;
+  mode = MODE.Edit;
+  GoToEdit(id);
+}
+
+  protected async Task ShowDelete(string id) {
+    s = await httpClient.GetFromJsonAsync<Student>($"{baseUrl}api/students/{id}");
+    student.Id = s.Id;
+    student.FirstName = s.FirstName;
+    student.LastName = s.LastName;
+    student.BcitID = s.BcitID;
+    student.MobileNumber = s.MobileNumber;
+    student.EmailAddress = s.EmailAddress;
+    student.CityOfResidence = s.CityOfResidence;
+    student.Specialization = s.Specialization;
+    mode = MODE.Delete;
+    GoToDelete(id);
+    }
+
+
+}

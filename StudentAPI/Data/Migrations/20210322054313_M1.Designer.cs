@@ -8,7 +8,7 @@ using StudentAPI.Data;
 namespace StudentAPI.Data.Migrations
 {
     [DbContext(typeof(StudentDbContext))]
-    [Migration("20210322051842_M1")]
+    [Migration("20210322054313_M1")]
     partial class M1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,7 @@ namespace StudentAPI.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bf4c9d70-3872-43ec-ba45-d252ff792bd8",
+                            Id = "202eec22-94a0-4074-b6e0-e598199bd609",
                             BcitID = "A00123456",
                             CityOfResidence = "Chilliwack",
                             EmailAddress = "jim@potter.com",
@@ -68,7 +68,7 @@ namespace StudentAPI.Data.Migrations
                         },
                         new
                         {
-                            Id = "627d709d-502e-4a72-ba84-cf3c09381407",
+                            Id = "eaa799f2-e4dd-4036-8f48-2154990c2cf1",
                             BcitID = "A00000001",
                             CityOfResidence = "Vancouver",
                             EmailAddress = "aa@aa.aa",
@@ -79,7 +79,7 @@ namespace StudentAPI.Data.Migrations
                         },
                         new
                         {
-                            Id = "98ee1f83-5ddd-4a9e-9dbb-fff0fddb12b2",
+                            Id = "f75258b0-c5d4-402f-925c-68cb959570d7",
                             BcitID = "A00000002",
                             CityOfResidence = "Abbotsford",
                             EmailAddress = "bb@bb.bb",
@@ -90,7 +90,7 @@ namespace StudentAPI.Data.Migrations
                         },
                         new
                         {
-                            Id = "9611f8ed-4ba3-40f5-aab2-25bc088fac17",
+                            Id = "31b8d2fa-ca07-42ce-9dc2-1743195af2b3",
                             BcitID = "A00000003",
                             CityOfResidence = "Surrey",
                             EmailAddress = "cc@cc.cc",
@@ -101,7 +101,7 @@ namespace StudentAPI.Data.Migrations
                         },
                         new
                         {
-                            Id = "bacb5700-ea46-4d64-9970-53f06786e911",
+                            Id = "2b7be063-83fa-4460-bd72-09e9f7eb44a8",
                             BcitID = "A00000004",
                             CityOfResidence = "Burnaby",
                             EmailAddress = "dd@dd.dd",
@@ -112,7 +112,7 @@ namespace StudentAPI.Data.Migrations
                         },
                         new
                         {
-                            Id = "56d76f0b-1a98-4788-99cc-a935d1f22b77",
+                            Id = "a1ee517c-30ab-48f5-b2a0-5a6c0e4d08c7",
                             BcitID = "A00000005",
                             CityOfResidence = "Vancouver",
                             EmailAddress = "ee@ee.ee",
@@ -123,7 +123,7 @@ namespace StudentAPI.Data.Migrations
                         },
                         new
                         {
-                            Id = "706c2c4e-ee96-46c6-b44d-efed6579bb75",
+                            Id = "ece8ffa4-42fc-402e-9ff9-b4275a4a4c11",
                             BcitID = "A00000006",
                             CityOfResidence = "Coquitlam",
                             EmailAddress = "ff@ff.ff",
@@ -134,7 +134,7 @@ namespace StudentAPI.Data.Migrations
                         },
                         new
                         {
-                            Id = "66333f72-32e6-43bd-99b3-1bf848baa8c3",
+                            Id = "3431c40c-9454-4792-900c-03cfb0b8add2",
                             BcitID = "A00000007",
                             CityOfResidence = "North-Vancouver",
                             EmailAddress = "gg@gg.gg",
@@ -145,7 +145,7 @@ namespace StudentAPI.Data.Migrations
                         },
                         new
                         {
-                            Id = "8f4dae03-d0f2-439d-8587-04b7f447e2f4",
+                            Id = "f1124c6f-4582-49a6-86a1-d95b963a910f",
                             BcitID = "A00000008",
                             CityOfResidence = "West-Vancouver",
                             EmailAddress = "hh@hh.hh",

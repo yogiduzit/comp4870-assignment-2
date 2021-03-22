@@ -1,0 +1,71 @@
+@page "/add"
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
+
+<h1>Add Student</h1>
+
+
+<EditForm Model="@student" OnValidSubmit="@HandleAdd">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
+    <br />
+    <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
+    <br />
+    <InputText placeholder="BCIT ID" id="bcitId" @bind-Value="@student.BcitID" />
+    <br />
+    <InputText placeholder="Mobile Number" id="mobileNumber" @bind-Value="@student.MobileNumber" />
+    <br />
+    <InputText placeholder="Email Address" id="emailAddress" @bind-Value="@student.EmailAddress" />
+    <br />
+    <InputText placeholder="City Of Residence" id="cityOfResidence" @bind-Value="@student.CityOfResidence" />
+    <br />
+    <InputText placeholder="Specialization" id="specialization" @bind-Value="@student.Specialization" />
+    <br />
+    <button type="submit">Submit</button>
+  </EditForm>
+
+    @code {
+    private Student student = new Student();
+    private enum MODE { None, Add, Edit, Delete };
+    MODE mode = MODE.None;
+    Student s;
+
+    private async void HandleAdd() {
+      string endpoint = $"{baseUrl}api/students";
+
+      student.Id = Guid.NewGuid().ToString();
+
+      await httpClient.PostAsJsonAsync(endpoint, student);
+
+      await load();
+      StateHasChanged(); // causes the page to get automatically refreshed
+      mode = MODE.None;
+      GoBack();
+    }
+  }
+
+
+@code {
+  Student[] students;
+  string baseUrl = "http://localhost:3000/";
+
+  protected override async Task OnInitializedAsync() {
+    await load();
+  }
+
+  protected async Task load() {
+    students = await httpClient.GetFromJsonAsync<Student[]>($"{baseUrl}api/students");
+  }
+
+  protected void Add() {
+    mode = MODE.Add;
+  }
+
+  protected void GoBack()
+  {
+      NavManager.NavigateTo("/students");
+  }
+
+}

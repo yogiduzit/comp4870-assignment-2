@@ -1,0 +1,77 @@
+@page "/delete/{id}"
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
+
+<h1>Delete Student</h1>
+
+<EditForm Model="@student" OnValidSubmit="@HandleDelete">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+
+  <InputText placeholder="First Name" id="firstName" @bind-Value="@student.FirstName" />
+  <br />
+  <InputText placeholder="Last Name" id="lastName" @bind-Value="@student.LastName" />
+  <br />
+  <InputText placeholder="BCIT ID" id="bcitId" @bind-Value="@student.BcitID" />
+    <br />
+    <InputText placeholder="Mobile Number" id="mobileNumber" @bind-Value="@student.MobileNumber" />
+    <br />
+    <InputText placeholder="Email Address" id="emailAddress" @bind-Value="@student.EmailAddress" />
+    <br />
+    <InputText placeholder="City Of Residence" id="cityOfResidence" @bind-Value="@student.CityOfResidence" />
+    <br />
+    <InputText placeholder="Specialization" id="specialization" @bind-Value="@student.Specialization" />
+  <br />
+  <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
+
+  @code {
+      private Student student = new Student();
+
+
+            Student s;
+
+
+            private enum MODE { None, Add, Edit, Delete };
+    MODE mode = MODE.None;
+    protected async void HandleDelete() {
+      string endpoint = $"{baseUrl}api/students/{Id}";
+      await load();
+      await httpClient.DeleteAsync(endpoint);
+      mode = MODE.None;
+      StateHasChanged(); // causes the page to get automatically refreshed
+      GoBack();
+    }
+  }
+</EditForm>
+
+ @code {
+
+  [Parameter]
+  public string Id { get; set; }
+
+  Student[] students;
+  string baseUrl = "http://localhost:3000/";
+
+  protected override async Task OnInitializedAsync() {
+    await load();
+  }
+
+  protected async Task load() {
+    @* students = await httpClient.GetFromJsonAsync<Student[]>($"{baseUrl}api/students"); *@
+    s = await httpClient.GetFromJsonAsync<Student>($"{baseUrl}api/students/{Id}");
+        student.Id = s.Id;
+                student.FirstName = s.FirstName;
+                student.LastName = s.LastName;
+                student.BcitID = s.BcitID;
+                student.MobileNumber = s.MobileNumber;
+                student.EmailAddress = s.EmailAddress;
+                student.CityOfResidence = s.CityOfResidence;
+                student.Specialization = s.Specialization;
+                mode = MODE.Edit;
+  }
+  protected void GoBack()
+  {
+      NavManager.NavigateTo("/students");
+  }
+
+}
