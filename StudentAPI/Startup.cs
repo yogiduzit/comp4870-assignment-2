@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using StudentAPI.Data;
 
 namespace StudentAPI
 {
@@ -26,6 +28,8 @@ namespace StudentAPI
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
+      services.AddDbContext<StudentDbContext>(
+                option => option.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
       services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
       {
         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
