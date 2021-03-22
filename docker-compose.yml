@@ -1,0 +1,19 @@
+version: "3.4"
+services:
+  webapi:
+    build:
+      context: .
+      dockerfile: StudentAPI/Dockerfile
+    ports:
+      - "3000:80"
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  wasm:
+    build:
+      context: .
+      dockerfile: BlazorClient/Dockerfile
+    depends_on:
+      - webapi
+    ports:
+      - 8888:80
