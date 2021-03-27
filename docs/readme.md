@@ -10,9 +10,4 @@ None
 1. Validations in add and update form
 
 ## Setup instructions
-Run the publish script before doing `docker-compose up`
-### On Mac
-sh ./publish.sh
-
-### On Windows
-.\publish
+Run `docker-compose up`
